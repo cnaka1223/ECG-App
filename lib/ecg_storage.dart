@@ -32,8 +32,7 @@ class CSVHelper {
     _sink = _file!.openWrite(mode: FileMode.write);
     _sink!.writeln('lead1');
 
-   
-    await appendFilename(filename);
+
   }
   
   Future<void> createNameFile() async {
@@ -51,6 +50,14 @@ class CSVHelper {
       await _nameSink!.close();
       _nameSink = null;
     }
+  }
+
+  Future<bool> doesNameFileExist() async {
+    final directory = await getExternalStorageDirectory();
+    if (directory == null) return false;
+
+    final file = File('${directory.path}/file_names.csv');
+    return await file.exists();
   }
 
   
@@ -121,7 +128,7 @@ Future<List<String>> readFilenameCSV() async {
 
   final contents = await file.readAsString();
 
-  // Split into lines, skip the first line ("Names:")
+
   final lines = contents.split('\n');
   List<String> filenames = [];
 
